@@ -1,0 +1,12 @@
+W(T1, A, Cyanida)
+W(T1, A, Zeus)
+C1
+W(T2, A, Squiddy)
+R(T3, A)
+R(T4, A)
+W(T2, A, Choki)
+C2
+W(T3, A, Mickey)
+C3
+W(T4, A, Sambel)
+C4

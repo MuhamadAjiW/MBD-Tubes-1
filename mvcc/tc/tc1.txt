@@ -1,0 +1,13 @@
+R(T1, A)
+R(T2, A)
+R(T3, B)
+R(T1, B)
+W(T3, C, Ayayay)
+W(T2, C, Delulu)
+R(T1, C)
+C1
+R(T2, D)
+W(T3, B, Dino)
+C3
+W(T2, D, Pikachu)
+C2
