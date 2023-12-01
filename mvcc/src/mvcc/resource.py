@@ -1,6 +1,6 @@
 class Resource:
-    def __init__(self, name, content="Init"):
-        self._name = name
+    def __init__(self, type, content="Init"):
+        self._name = type
         self._version = {0: [0, 0, content]}
 
     def add_version(self, id, rts, wts):
