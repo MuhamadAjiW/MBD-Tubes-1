@@ -50,7 +50,7 @@ class Manager:
             return
         for txn in read:
             logging.info(f"[ABORT] T{txn} Cascading Rollback")
-            self._transaction[txn].self.abort()
+            self._transaction[txn].abort()
             self.rollback(self.check_read(self.check_write(txn)))
 
     def get_max(self, res, txn):
@@ -64,7 +64,7 @@ class Manager:
         qk = self.get_max(res, txn)
         if txn < qk[0]:
             logging.info(f"[>] ABORT T{txn}")
-            self.get_txn(txn).self.abort()
+            self.get_txn(txn).abort()
             self.rollback(self.check_read(self.check_write(txn)))
         elif txn == qk[1]:
             logging.info(f"[>] OVERWRITE Value({res}{txn}) = {val}")

@@ -1,8 +1,8 @@
 from const import *
 
 class Transaction:
-    def __init__(self, type, ts):
-        self._name = type
+    def __init__(self, name, ts):
+        self._name = name
         self._ts = ts
         self._status = Status.ACTIVE
 
@@ -15,7 +15,7 @@ class Transaction:
     def commit(self):
         self._status = Status.COMMIT
 
-    def self.abort(self):
+    def abort(self):
         self._status = Status.ABORT
 
     def get_ts(self):
