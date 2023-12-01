@@ -36,8 +36,8 @@ Tugas ini terdiri dari beberapa bagian yang diperlukan untuk memenuhi spesifikas
 
 Masuk ke direktori recovery lalu jalankan simulate-backup.sh (bash)
 
-> cd recovery
-> ./simulate-backup.sh
+    > cd recovery
+    > ./simulate-backup.sh
 
 ## Pembagian tugas
 
