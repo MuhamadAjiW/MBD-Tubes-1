@@ -11,10 +11,12 @@
 
 ## Deskripsi Aplikasi
 
+Tugas ini terdiri dari beberapa bagian yang diperlukan untuk memenuhi spesifikasi Tugas Besar IF3140 Manajemen Basis Data. Pada spesifikasi tugas tersebut, penulis diminta untuk melakukan eksplorasi terhadap DBMS yaitu PostgreSQL, khususnya pada bagian concurrency control, locking, dan recovery. Setiap folder berisikan aplikasi yang diperlukan untuk eksplorasi tersebut. 
+
 ## Daftar requirement
 
-- Python3.7 ke atas
-- Untuk recovery membutuhkan docker dan bash
+- `Python` versi 3.7 ke atas
+- Untuk recovery membutuhkan `docker` dan `bash`
 
 ## Cara Menjalankan
 
@@ -22,11 +24,11 @@
 
 > Lorem ipsum
 
-### Optimistic Concurrency Control
+### Optimistic Concurrency Control (OCC)
 
 > Lorem ipsum
 
-### Multiversion Timestamp Ordering Concurrecy Control
+### Multiversion Timestamp Ordering Concurrecy Control (MVCC)
 
 > Lorem ipsum
 
@@ -43,4 +45,4 @@ Masuk ke direktori recovery lalu jalankan simulate-backup.sh (bash)
 2. Two-Phase Locking: 13520137
 3. Optimistic Concurrency Control: 13521063
 4. Multiversion Timestamp Ordering Concurrecy Control: 13521151
-5. Eksplorasi Recovery
+5. Eksplorasi Recovery: 13521083
