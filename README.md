@@ -22,16 +22,19 @@ Tugas ini terdiri dari beberapa bagian yang diperlukan untuk memenuhi spesifikas
 
 ### Two-Phase Locking
 
-> Lorem ipsum
+> cd ke two_phase_locking
+> Jalankan perintah `python3 main.py`
+> sesuaikan variabel filename dengan path input pada folder test
 
 ### Optimistic Concurrency Control (OCC)
 
-> Lorem ipsum
+> cd ke occ/src
+> Jalankan perintah `python main.py`. Untuk mencoba file lain, buka main.py, ganti filename pada path.
 
 ### Multiversion Timestamp Ordering Concurrecy Control (MVCC)
 
-> Lorem ipsum
-
+> cd ke mvcc
+> Jalankan perintah `py src/main.py tc/tc3.txt`. Sesuaikan "tc3.txt" dengan test case yang ingin digunakan
 ### Eksplorasi Recovery
 
 Masuk ke direktori recovery lalu jalankan simulate-backup.sh (bash)
