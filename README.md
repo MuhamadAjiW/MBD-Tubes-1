@@ -16,7 +16,7 @@ Tugas ini terdiri dari beberapa bagian yang diperlukan untuk memenuhi spesifikas
 ## Daftar requirement
 
 - `Python` versi 3.7 ke atas
-- Untuk recovery membutuhkan `docker` dan `bash`
+- Untuk recovery membutuhkan Linux OS atau WSL, `docker`, `docker-compose`, `postgresql`, dan `bash`
 
 ## Cara Menjalankan
 
@@ -37,6 +37,7 @@ Tugas ini terdiri dari beberapa bagian yang diperlukan untuk memenuhi spesifikas
 Masuk ke direktori recovery lalu jalankan simulate-backup.sh (bash)
 
     > cd recovery
+    > chmod +x ./simulate-backup.sh
     > ./simulate-backup.sh
 
 ## Pembagian tugas
