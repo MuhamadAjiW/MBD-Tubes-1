@@ -36,7 +36,7 @@ class TwoPhaseLocking:
                     if self.transactions.iloc[transaction_row]["Blocked_by"] == []:
                         self.transactions.iloc[transaction_row]["Blocked_Operations"] = []
     
-    def setLockMode(self,row_index):
+    def setLockMode(self,type,row_index):
         self.lock_table.iloc[row_index]["Lock-Mode"] = type[0].upper()
 
     def read_wound_wait(self,type,transaction,transaction_timestamp,row_index,curr_transaction_index,lock_holding_transaction,row_index_comp):
@@ -96,7 +96,7 @@ class TwoPhaseLocking:
                     transaction_timestamp = self.transactions.iloc[curr_transaction_index]["TimeStamp"]
 
                     if transaction in self.lock_table.iloc[row_index]["Transaction_id"]:
-                        self.setLockMode(row_index)
+                        self.setLockMode(type,row_index)
                     else:
                         lock_holding_transaction = (self.lock_table.iloc[row_index]["Transaction_id"])[0]
                         row_index_comp = int(self.transactions[self.transactions["Transaction_id"] == lock_holding_transaction].index[0])

@@ -1,7 +1,7 @@
 import pandas as pd
 from locking import *
 
-filename = "test/test3.txt"
+filename = "test/test1.txt"
 print("Current file:",filename)
 transactions = pd.DataFrame(columns=["Transaction_id", "TimeStamp","State", "Blocked_by", "Blocked_Operations"])
 lock_table = pd.DataFrame(columns=["Data-Item","Lock-Mode","Transaction_id"])
