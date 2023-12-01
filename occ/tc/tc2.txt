@@ -1,0 +1,15 @@
+R5, X
+R2, Y
+R1, Y
+W3, Y, Gajah
+W3, Z, Tulus
+R5, Z
+R2, Z
+C2
+R1, Z
+C1
+R4, W
+C4
+W3, W, Paris
+C3
+C5

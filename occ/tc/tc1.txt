@@ -1,0 +1,13 @@
+R1, A
+R2, A
+R3, B
+R1, A
+W3, C, Ayayay
+W2, C, Delulu
+R1, C
+C1
+R2, D
+W3, B, Dino
+C3
+W2, D, Pikachu
+C2
