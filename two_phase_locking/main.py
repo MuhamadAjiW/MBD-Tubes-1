@@ -1,32 +1,20 @@
 import pandas as pd
 from locking import *
-from tabulate import tabulate
 
-filename = "test/input-1.txt"
+filename = "test/test3.txt"
 print("Current file:",filename)
-transaction_table = pd.DataFrame(columns=["Transaction_id", "TimeStamp","State", "Blocked_by", "Blocked_Operations"])
+transactions = pd.DataFrame(columns=["Transaction_id", "TimeStamp","State", "Blocked_by", "Blocked_Operations"])
 lock_table = pd.DataFrame(columns=["Data-Item","Lock-Mode","Transaction_id"])
 proceed = True
 while proceed:
-    type_locking = input("Please two phase locking type that want to test:\n1. Wound & Wait\n2. Wait & Die\n3. No-Waiting\nSelect 1,2 or 3.\nType here: ")
-    locking_protocol = TwoPhaseLocking(transaction_table,lock_table,type_locking)
+    type_locking = input("Please select two phase locking type that want to test:\n1. No-Waiting\n2. Wait & Die\n3. Wound & Wait\nSelect 1,2 or 3.\nType here: ")
+    locking_protocol = TwoPhaseLocking(transactions,lock_table,type_locking)
     if type_locking == "1" or type_locking == "2" or type_locking == "3":
         file = open(filename,"r")
-        for line in file:
-            line = line.rstrip("\n")
-            print("Operation", line)
-            if line[0] == "b":
-                locking_protocol.add_transaction(line)
-            if line[0] == "r":
-                locking_protocol.read_operation(line)
-            if line[0] == "w":
-                locking_protocol.write_operation(line)
-            if line[0] == "e":
-                locking_protocol.end_transaction(line)
-            print("Transaction Table:")
-            print(tabulate(transaction_table, headers='keys', tablefmt='psql',showindex="never"))
-            print("Lock Table:")
-            print(tabulate(lock_table, headers='keys', tablefmt='psql',showindex="never"))
+        for operation in file:
+            operation = operation.rstrip("\n")
+            print("Operation", operation)
+            locking_protocol.run(operation)
         proceed = False
     else:
         print("\n\n---------Please select again!")
