@@ -69,13 +69,13 @@ def determine_pip_install_arguments():
     pre_parser.add_argument("--no-wheel", action="store_true")
     pre, args = pre_parser.parse_known_args()
 
-    args.append("pip")
+    args._append("pip")
 
     if include_setuptools(pre):
-        args.append("setuptools")
+        args._append("setuptools")
 
     if include_wheel(pre):
-        args.append("wheel")
+        args._append("wheel")
 
     return ["install", "--upgrade", "--force-reinstall"] + args
 

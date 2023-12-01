@@ -18,10 +18,10 @@ class Manager:
         return self.get_txn(txn)._status == Status.ABORT
 
     def set_read(self, txn, vers, res):
-        self._read_logs.setdefault(res, []).append((txn, vers))
+        self._read_logs.setdefault(res, [])._append((txn, vers))
 
     def set_write(self, txn, res):
-        self._write_logs.setdefault(txn, []).append((res, txn))
+        self._write_logs.setdefault(txn, [])._append((res, txn))
 
     def get_txn(self, key):
         return self._transaction.get(key, False)

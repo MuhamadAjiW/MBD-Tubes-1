@@ -2,10 +2,10 @@ import pandas as pd
 from locking import *
 from tabulate import tabulate
 
-filename = "input-1.txt"
+filename = "test/input-1.txt"
 print("Current file:",filename)
-transaction_table = pd.DataFrame(columns=["T_ID", "TimeStamp","State", "Blocked_by", "Blocked_Operations"])
-lock_table = pd.DataFrame(columns=["Data-Item","Lock-Mode","T_ID"])
+transaction_table = pd.DataFrame(columns=["Transaction_id", "TimeStamp","State", "Blocked_by", "Blocked_Operations"])
+lock_table = pd.DataFrame(columns=["Data-Item","Lock-Mode","Transaction_id"])
 proceed = True
 while proceed:
     type_locking = input("Please two phase locking type that want to test:\n1. Wound & Wait\n2. Wait & Die\n3. No-Waiting\n4. Cautious Waiting\nSelect 1,2,3 or 4.\nType here: ")

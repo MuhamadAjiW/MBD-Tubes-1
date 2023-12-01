@@ -21,13 +21,13 @@ class Manager:
                 txn_name = 'T' + operation[1]
 
                 # Adding Queue Operations
-                self.queue.append(line.strip())
+                self.queue._append(line.strip())
 
                 # Adding Transactions
                 if txn_name not in self.transactions_name:
-                    self.transactions_name.append(txn_name)
+                    self.transactions_name._append(txn_name)
                     current_txn = Transaction(txn_name)
-                    self.txns.append(current_txn)
+                    self.txns._append(current_txn)
                 else:
                     current_txn = next(txn for txn in self.txns if txn.name == txn_name)
 
@@ -102,7 +102,7 @@ class Manager:
                 self.resources[resource_name].set_value(new_value)
             elif op == 'C':
                 if self.check_conflict(current_txn):
-                    self.rollbacks.append(current_txn)
+                    self.rollbacks._append(current_txn)
                 else :
                     current_txn.commit()
 
