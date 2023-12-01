@@ -79,7 +79,7 @@ psql $POSTGRES -c "\l"
 docker compose down -v 2>/dev/null
 
 # cleanup (jaga-jaga doang)
-sudo rm -rf data/recovery.singnal
+sudo rm -rf data/recovery.signal
 
 # Testing apakah recovery benar-benar berhasil
 docker compose up -d 2>/dev/null
