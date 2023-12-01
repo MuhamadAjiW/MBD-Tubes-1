@@ -8,9 +8,9 @@ transaction_table = pd.DataFrame(columns=["Transaction_id", "TimeStamp","State",
 lock_table = pd.DataFrame(columns=["Data-Item","Lock-Mode","Transaction_id"])
 proceed = True
 while proceed:
-    type_locking = input("Please two phase locking type that want to test:\n1. Wound & Wait\n2. Wait & Die\n3. No-Waiting\n4. Cautious Waiting\nSelect 1,2,3 or 4.\nType here: ")
+    type_locking = input("Please two phase locking type that want to test:\n1. Wound & Wait\n2. Wait & Die\n3. No-Waiting\nSelect 1,2 or 3.\nType here: ")
     locking_protocol = TwoPhaseLocking(transaction_table,lock_table,type_locking)
-    if type_locking == "1" or type_locking == "2" or type_locking == "3" or type_locking == "4":
+    if type_locking == "1" or type_locking == "2" or type_locking == "3":
         file = open(filename,"r")
         for line in file:
             line = line.rstrip("\n")

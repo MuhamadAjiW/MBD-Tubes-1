@@ -12,55 +12,30 @@ class TwoPhaseLocking:
             print("Begin Transaction: T"+str(type[1]))
 
     def abort(self,lock_table_row_index,current_transaction_row_index, comparing_transaction, row_index_of_comparing_transaction):
-
-        if self.type_locking != "4":
-            self.transaction_table.iloc[row_index_of_comparing_transaction]["State"] = "Aborted"
-            self.transaction_table.iloc[row_index_of_comparing_transaction]["Blocked_by"] = []
-            self.transaction_table.iloc[row_index_of_comparing_transaction]["Blocked_Operations"] = []
-            self.lock_table.iloc[lock_table_row_index]["Transaction_id"].remove(comparing_transaction)
-            temp = (self.lock_table["Transaction_id"].values)[:]
-            for i in temp:
-                if comparing_transaction in i:
-                    location = list(temp).index(i)
-                    (self.lock_table["Transaction_id"].values)[location].remove(comparing_transaction)
-                    if not (self.lock_table["Transaction_id"].values)[location]:
-                        data_item_row = (list(self.lock_table["Transaction_id"].values)).index((self.lock_table["Transaction_id"].values)[location])
-                        self.lock_table = self.lock_table.drop(self.lock_table.index[data_item_row])
-            self.lock_table = self.lock_table.reset_index(drop = True)
-            if list(self.transaction_table["Blocked_by"].values):
-                for j in self.transaction_table["Blocked_by"].values:
-                    if comparing_transaction in j:
-                        transaction_row = (list(self.transaction_table["Blocked_by"].values)).index(j)
-                        j.remove(comparing_transaction)
-                        self.transaction_table.iloc[transaction_row]['State'] = "Active"
-                        for k in list(self.transaction_table.iloc[transaction_row]["Blocked_Operations"][:]):
-                            self.run(k)
-                        if self.transaction_table.iloc[transaction_row]["Blocked_by"] == []:
-                            self.transaction_table.iloc[transaction_row]["Blocked_Operations"] = []
-        elif self.type_locking == "4":
-            self.transaction_table.iloc[current_transaction_row_index]["State"] = "Aborted"
-            self.transaction_table.iloc[current_transaction_row_index]["Blocked_by"] = []
-            self.transaction_table.iloc[current_transaction_row_index]["Blocked_Operations"] = []
-            current_transaction = self.transaction_table.iloc[current_transaction_row_index]["Transaction_id"]
-            temp = (self.lock_table["Transaction_id"].values)[:]
-            for i in temp:
-                if current_transaction in i:
-                    location = list(temp).index(i)
-                    (self.lock_table["Transaction_id"].values)[location].remove(current_transaction)
-                    if not (self.lock_table["Transaction_id"].values)[location]:
-                        data_item_row = (list(self.lock_table["Transaction_id"].values)).index((self.lock_table["Transaction_id"].values)[location])
-                        self.lock_table = self.lock_table.drop(self.lock_table.index[data_item_row])
-            self.lock_table = self.lock_table.reset_index(drop = True)
-            if list(self.transaction_table["Blocked_by"].values):
-                for j in self.transaction_table["Blocked_by"].values:
-                    if current_transaction in j:
-                        transaction_row = (list(self.transaction_table["Blocked_by"].values)).index(j)
-                        j.remove(current_transaction)
-                        self.transaction_table.iloc[transaction_row]['State'] = "Active"
-                        for k in list(self.transaction_table.iloc[transaction_row]["Blocked_Operations"][:]):
-                            self.run(k)
-                        if self.transaction_table.iloc[transaction_row]["Blocked_by"] == []:
-                            self.transaction_table.iloc[transaction_row]["Blocked_Operations"] = []
+        self.transaction_table.iloc[row_index_of_comparing_transaction]["State"] = "Aborted"
+        self.transaction_table.iloc[row_index_of_comparing_transaction]["Blocked_by"] = []
+        self.transaction_table.iloc[row_index_of_comparing_transaction]["Blocked_Operations"] = []
+        self.lock_table.iloc[lock_table_row_index]["Transaction_id"].remove(comparing_transaction)
+        temp = (self.lock_table["Transaction_id"].values)[:]
+        for i in temp:
+            if comparing_transaction in i:
+                location = list(temp).index(i)
+                (self.lock_table["Transaction_id"].values)[location].remove(comparing_transaction)
+                if not (self.lock_table["Transaction_id"].values)[location]:
+                    data_item_row = (list(self.lock_table["Transaction_id"].values)).index((self.lock_table["Transaction_id"].values)[location])
+                    self.lock_table = self.lock_table.drop(self.lock_table.index[data_item_row])
+        self.lock_table = self.lock_table.reset_index(drop = True)
+        if list(self.transaction_table["Blocked_by"].values):
+            for j in self.transaction_table["Blocked_by"].values:
+                if comparing_transaction in j:
+                    transaction_row = (list(self.transaction_table["Blocked_by"].values)).index(j)
+                    j.remove(comparing_transaction)
+                    self.transaction_table.iloc[transaction_row]['State'] = "Active"
+                    for k in list(self.transaction_table.iloc[transaction_row]["Blocked_Operations"][:]):
+                        self.run(k)
+                    if self.transaction_table.iloc[transaction_row]["Blocked_by"] == []:
+                        self.transaction_table.iloc[transaction_row]["Blocked_Operations"] = []
+                        
     
     def read_operation(self, type):
         if self.transaction_table.iloc[int(type[1])-1]["State"] == "Active":
@@ -131,26 +106,6 @@ class TwoPhaseLocking:
                             if not self.lock_table.iloc[row_index]["Transaction_id"]:
                                 self.lock_table.iloc[row_index]["Lock-Mode"] = type[0].upper()
                                 self.lock_table.iloc[row_index]["Transaction_id"].append(transaction)
-                    elif self.type_locking == "4":
-                        # Cautious-Waiting
-                        if transaction in self.lock_table.iloc[row_index]["Transaction_id"]:
-                            self.lock_table.iloc[row_index]["Lock-Mode"] = type[0].upper()
-                            
-                        else:
-                            lock_holding_transaction = (self.lock_table.iloc[row_index]["Transaction_id"])[0]
-                            row_index_of_comparing_transaction = int(self.transaction_table[self.transaction_table["Transaction_id"] == lock_holding_transaction].index[0])
-                            state_of_lock_holding_transaction = self.transaction_table.iloc[row_index_of_comparing_transaction]["State"]
-                            # Checks the state of the lock holding transaction
-                            if state_of_lock_holding_transaction == "Blocked":
-                                self.abort(row_index,current_transaction_row_index,lock_holding_transaction,row_index_of_comparing_transaction)
-                                print(transaction,"is aborted as",lock_holding_transaction,"is blocked.")
-                            else:
-                                # Wait for the lock lock holding transaction
-                                self.transaction_table.iloc[current_transaction_row_index]["State"] = "Blocked"
-                                self.transaction_table.iloc[current_transaction_row_index]["Blocked_by"].append(str(lock_holding_transaction))
-                                if type not in self.transaction_table.iloc[current_transaction_row_index]["Blocked_Operations"]:
-                                    self.transaction_table.iloc[current_transaction_row_index]["Blocked_Operations"].append(type)
-                                print(transaction,"waits for",lock_holding_transaction,"to release",type[3])
             else:
                 add_row = {"Data-Item": str(type[3]), "Lock-Mode":type[0].upper(), "Transaction_id": ["Transaction"+str(type[1])]}
                 self.lock_table = self.lock_table._append(add_row, ignore_index=True)
@@ -267,29 +222,6 @@ class TwoPhaseLocking:
                             timestamp_of_comparing_transaction = self.transaction_table.iloc[row_index_of_comparing_transaction]["TimeStamp"]
                             self.abort(row_index,current_transaction_row_index,i,row_index_of_comparing_transaction)
                     self.lock_table.iloc[row_index]["Lock-Mode"] = type[0].upper()
-                elif self.type_locking == "4":
-                    if transaction in self.lock_table.iloc[row_index]["Transaction_id"]  and len(list(self.lock_table.iloc[row_index]["Transaction_id"])) == 1:
-                        self.lock_table.iloc[row_index]["Lock-Mode"] = type[0].upper()
-                        print(transaction,"upgrades to W lock on",type[3])
-
-                    else:
-                        for i in list(self.lock_table.iloc[row_index]["Transaction_id"]):
-                            if i != transaction:
-                                row_index_of_comparing_transaction = int(self.transaction_table[self.transaction_table["Transaction_id"] == i].index[0])
-                                status_of_current_transaction = self.transaction_table.iloc[row_index]["State"]
-                                status_of_comparing_transaction = self.transaction_table.iloc[row_index_of_comparing_transaction]["State"]
-                                if status_of_comparing_transaction == "Blocked" and status_of_current_transaction != "Aborted":
-                                    print(transaction,"is aborted and locks are released as",i,"is blocked.")
-                                    self.abort(row_index,current_transaction_row_index,i,row_index_of_comparing_transaction)
-                                    
-
-                                elif status_of_comparing_transaction == "Active" and status_of_current_transaction != "Aborted":
-                                    self.transaction_table.iloc[current_transaction_row_index]["State"] = "Blocked"
-                                    if i not in self.transaction_table.iloc[current_transaction_row_index]["Blocked_by"]:
-                                        self.transaction_table.iloc[current_transaction_row_index]["Blocked_by"].append(str(i))
-                                    if type not in self.transaction_table.iloc[current_transaction_row_index]["Blocked_Operations"]:
-                                        self.transaction_table.iloc[current_transaction_row_index]["Blocked_Operations"].append(type)
-                                    print(transaction,"waits for",i,"to release",type[3])
             else:
                 add_row = {"Data-Item": str(type[3]), "Lock-Mode":type[0].upper(), "Transaction_id": ["Transaction"+str(type[1])]}
                 self.lock_table = self.lock_table._append(add_row, ignore_index=True)
@@ -300,7 +232,7 @@ class TwoPhaseLocking:
             print("As","Transaction"+str(type[1]), "is blocked operation!") 
             print("So, It was added to the list to Blocked_Operations.")
         
-        if self.transaction_table.iloc[int(type[1])-1]["State"] == "Aborted" and self.type_locking != "4":
+        if self.transaction_table.iloc[int(type[1])-1]["State"] == "Aborted":
             print("Transaction"+str(type[1]),"is already aborted!")
             print("No changes in the tables.")
     
